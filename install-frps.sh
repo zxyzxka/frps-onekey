@@ -122,10 +122,20 @@ check_os_bit(){
     ARCHS=""
     if [[ `getconf WORD_BIT` = '32' && `getconf LONG_BIT` = '64' ]] ; then
         Is_64bit='y'
-        ARCHS="arm64"
+            if [[ `dpkg --print-architecture` = `amd64` && `dpkg --print-architecture` = `arm64` ]] ; then
+				Is_amd64='y'
+				ARCHS="amd64"
+			else
+				Is_amd64='n'
+				ARCHS="arm64"
     else
         Is_64bit='n'
-        ARCHS="arm"
+			if [[ `dpkg --print-architecture` = `386` && `dpkg --print-architecture` = `arm` ]] ; then
+				Is_386='y'
+				ARCHS="386"
+			else
+				Is_amd64='n'
+				ARCHS="arm"
     fi
 }
 check_centosversion(){
